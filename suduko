@@ -1,0 +1,55 @@
+class Solution {
+    public static char finalans[][]=new char[9][9];
+    public void solveSudoku(char[][] board) {
+   // System.out.println("hiiii");
+        solve(board,0,0);
+        board=finalans;
+      //  return finalans;
+    }
+    public static void solve(char[][] board,int row,int col){
+        System.out.println("solving for row "+row+" col "+col);
+        //base case
+        if(row==9&& col==0){                                           //means entire suduko filled
+            for(int i=0;i<9;i++){
+                for(int j=0;j<9;j++){
+                    System.out.print(finalans[i][j]+" ");
+                    finalans[i][j]=board[i][j];
+                }
+                  System.out.println();
+            }    
+            return;
+        }
+      
+        for(int i=1;i<=9;i++){
+            if(board[row][col] =='.' && isSafe(board,row,col,i) == true){
+                board[row][col] =(char)i;
+                if(col+1<9)     solve(board,row,col+1);
+                 if(col+1==9)   solve(board,row+1,0);
+                board[row][col] = '.';
+                
+            }
+        }
+    }
+    public static boolean isSafe(char board[][],int row,int col,int val){
+        //check row
+        for(int i=0;i<9;i++){
+            if((int)board[row][i] ==val) return false;
+        }
+        
+        //check col
+          for(int i=0;i<9;i++){
+            if((int)board[i][col] ==val) return false;
+        }
+        
+        //check box
+        int boxrow=row/3;
+          int boxcol=col/3;
+        
+        for(int i=boxrow*3;i<boxrow*3+3;i++)
+            for(int j=boxcol*3;j<boxcol*3+3;j++){
+                if((int)board[i][j]==val)  return false;
+            }
+        
+        return true;
+    }
+}
